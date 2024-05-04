@@ -11,6 +11,23 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Final Project
+
+# Problem Decomposition
+
+    -   At the beginning of the document to introduce your dataset and the general tasks that you will be completing in the following code chunks (problem decomposition).
+    -   Text between the code chunks outlining the tasks that each code chunk is performing.
+    
+    
+    - Weeks to include 
+      - 2 - Wirtten in R
+      - 5 - Data viz 
+      - 8 - Accomplish a larger task
+      - 9 - GitHub Repo/Reproducibility 
+      - 11 - Making Choices
+      
+      - 6 - Tidy Data ?
+
 A handful of fyi stuff: 
 
 - cbb.csv has seasons 2013-2019 and seasons 2021-2023 combined
@@ -25,7 +42,39 @@ Data Dictionary:
 
 - TEAM: The Division I college basketball school
 
-- CONF: The Athletic Conference in which the school participates in (A10 = Atlantic 10, ACC = Atlantic Coast Conference, AE = America East, Amer = American, ASun = ASUN, B10 = Big Ten, B12 = Big 12, BE = Big East, BSky = Big Sky, BSth = Big South, BW = Big West, CAA = Colonial Athletic Association, CUSA = Conference USA, Horz = Horizon League, Ivy = Ivy League, MAAC = Metro Atlantic Athletic Conference, MAC = Mid-American Conference, MEAC = Mid-Eastern Athletic Conference, MVC = Missouri Valley Conference, MWC = Mountain West, NEC = Northeast Conference, OVC = Ohio Valley Conference, P12 = Pac-12, Pat = Patriot League, SB = Sun Belt, SC = Southern Conference, SEC = South Eastern Conference, Slnd = Southland Conference, Sum = Summit League, SWAC = Southwestern Athletic Conference, WAC = Western Athletic Conference, WCC = West Coast Conference)
+- CONF: The Athletic Conference in which the school participates in 
+    - (A10 = Atlantic 10, 
+    - ACC = Atlantic Coast Conference, 
+    - AE = America East, 
+    - Amer = American, 
+    - ASun = ASUN, 
+    - B10 = Big Ten, 
+    - B12 = Big 12, 
+    - BE = Big East, 
+    - BSky = Big Sky, 
+    - BSth = Big South, 
+    - BW = Big West, 
+    - CAA = Colonial Athletic Association, 
+    - CUSA = Conference USA, 
+    - Horz = Horizon League, 
+    - Ivy = Ivy League, 
+    - MAAC = Metro Atlantic Athletic Conference, 
+    - MAC = Mid-American Conference, 
+    - MEAC = Mid-Eastern Athletic Conference, 
+    - MVC = Missouri Valley Conference, 
+    - MWC = Mountain West, 
+    - NEC = Northeast Conference, 
+    - OVC = Ohio Valley Conference, 
+    - P12 = Pac-12, 
+    - Pat = Patriot League, 
+    - SB = Sun Belt, 
+    - SC = Southern Conference, 
+    - SEC = South Eastern Conference, 
+    - Slnd = Southland Conference, 
+    - Sum = Summit League, 
+    - SWAC = Southwestern Athletic Conference, 
+    - WAC = Western Athletic Conference, 
+    - WCC = West Coast Conference)
 
 - G: Number of games played
 
@@ -86,7 +135,12 @@ library(tidyverse)
 
 # Set the directory where your .csv files are located
 ```{r}
-folder_path <- "data_raw/cbb"
+getwd()
+
+setwd("./data_raw/cbb")
+
+# create object to store directory of the files you want to use 
+folder_path <- "../data_raw/cbb"
 ```
 
 # List all .csv files in the folder
@@ -105,6 +159,11 @@ for (file in file_list) {
   # Read the .csv file into a data frame with a name based on the file number
   assign(paste0("cbb", file_number), read.csv(file.path(folder_path, file)))
 }
+
+# load in cbb.csv file on its own
+
+cbb <- read_csv("./data_raw/cbb/cbb.csv")
+
 ```
 
 ## Okay let's try it using Week 12 stuff:
@@ -118,6 +177,8 @@ for (file in file_list) {
   
 }
 
+
+# as of 05/03/24 need to come back to this
 ```
 
 
@@ -136,7 +197,16 @@ What kind of stuff do I have here?
 
 summary(cbb13)
 
-- This is only for 2013 so it doesn't have a year column but it has all the other columns. What kind of things can I glean from this data?
+- What kind of things can I glean from this data?
+
+# Let's just jump right into it!
+
+
+```{r}
+cbb %>% 
+  filter(TEAM == "Arizona")
+```
+
 
 
 ## Things I may need to do
@@ -144,5 +214,15 @@ summary(cbb13)
 - I'm gonna want to make postseason, possibly seed, possibly conference, and possibly team into factors with levels for easier plotting. 
 
 - 
+
+## What I said I wanted to do in the proposal
+
+- 3.  Speaking generally, what tasks will you perform with this dataset? It might include tasks that we have not yet covered how to accomplish in class, but come up with a general plan that you would like to follow.
+
+  I'm interested to combine the .csv files into one large file with a year column and make a few plots showing how each team has done over the years. I am obviously most interested in Arizona basketball, but I'll make a few plots of when a handful of teams exited the postseason tournament (which I am currently traveling for) each year. 
+  
+4.  One of the requirements of the final project is to make some type of plot using `ggplot2` with the data. What do you plan to plot from your data?
+
+  I plan to plot a histogram of the frequency of when Arizona basketball exited from the March Madness tournament over the years. I also plan to plot the champions over the past 11 years and perhaps their win-loss record as well. I might plot conference as well, noting any changes in conference over the years. 
 
 
