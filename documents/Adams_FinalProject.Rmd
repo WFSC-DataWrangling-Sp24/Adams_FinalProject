@@ -9,6 +9,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = '/Users/graceadams/Documents/Git/Adams_FinalProject')
 ```
 
 ## Final Project
@@ -20,13 +21,13 @@ knitr::opts_chunk$set(echo = TRUE)
     
     
     - Weeks to include 
-      - 2 - Wirtten in R
-      - 5 - Data viz 
+      - 2 - Wirtten in R (DONE)
+      - 5 - Data viz (DONE)
       - 8 - Accomplish a larger task
-      - 9 - GitHub Repo/Reproducibility 
-      - 11 - Making Choices
+      - 9 - GitHub Repo/Reproducibility (DONE)
+      - 11 - Making Choices 
       
-      - 6 - Tidy Data ?
+      - 6 - Tidy Data ? (renaming columns,,,, can rename a few and call it good?)
 
 A handful of fyi stuff: 
 
@@ -127,6 +128,15 @@ Data Dictionary:
 ```{r}
 #install.packages("tidyverse")
 library(tidyverse)
+
+#install.packages("ggplot2")
+library(ggplot2)
+
+#install.packages("ggpubr")
+library(ggpubr)
+
+#install.packages("RColorBrewer)
+library(RColorBrewer)
 ```
 
 
@@ -137,15 +147,14 @@ library(tidyverse)
 ```{r}
 getwd()
 
-setwd("./data_raw/cbb")
 
 # create object to store directory of the files you want to use 
-folder_path <- "../data_raw/cbb"
+folder_path <- "./data_raw/cbb"
 ```
 
 # List all .csv files in the folder
 ```{r}
-file_list <- list.files(folder_path, pattern = "cbb[0-9]{2}\\.csv")
+file_list <- list.files (folder_path, pattern = "cbb[0-9]{2}\\.csv")
 ```
 
 
@@ -168,14 +177,14 @@ cbb <- read_csv("./data_raw/cbb/cbb.csv")
 
 ## Okay let's try it using Week 12 stuff:
 ```{r}
-for (file in file_list) {
+#for (file in file_list) {
   # Extract the two-digit number from the file name
-  file_number <- gsub("cbb|\\.csv", "", file)
+ # file_number <- gsub("cbb|\\.csv", "", file)
   
   # I need to do something here that will pull each .csv based on file_number and then assign each value of file_number to a new data frame named "cbb*file_number*" 
   
   
-}
+#}
 
 
 # as of 05/03/24 need to come back to this
@@ -185,6 +194,7 @@ for (file in file_list) {
 ## Data Exploration
 ```{r}
 summary(cbb)
+glimpse(cbb)
 ```
 
 What kind of stuff do I have here?
@@ -202,11 +212,120 @@ summary(cbb13)
 # Let's just jump right into it!
 
 
+Some wee cleaning up (year, postseason, team, conference into factors)
+```{r}
+cbb$TEAM <- as.factor(cbb$TEAM)
+
+cbb$SEED <- as.factor(cbb$SEED)
+seed <- c("1" = "red", "2" = "orange", "3" = "yellow", "4"= "green", "5"= "blue", "6" = "mediumpurple", "7" = "purple", "8"= "firebrick", "9"= "darkorange", "10" = "gold2", "11" = "seagreen", "12" = "slateblue", "13" = "darkorchid", "14"= "magenta3","15" = "deeppink3", "16"= "mediumvioletred")
+
+cbb$YEAR <- as.factor(cbb$YEAR)
+
+cbb$POSTSEASON <- as.factor(cbb$POSTSEASON)
+postseason = c('R68'='darkorchid3','R64'='firebrick3','R32'='aquamarine3','S16'='slateblue3','E8' = 'green3', 'F4' = 'goldenrod3', '2ND' = 'gray71', 'Champions' = 'gold2')
+
+
+cbb$CONF <- as.factor(cbb$CONF)
+```
+
+
+
 ```{r}
 cbb %>% 
   filter(TEAM == "Arizona")
 ```
 
+```{r}
+arizona_seed <- cbb %>% 
+  filter(TEAM == "Arizona", !is.na(SEED)) %>% 
+  ggplot(aes(x=YEAR, y=SEED, fill=SEED))+
+  scale_fill_manual(values=seed)+
+  geom_col()+
+  labs(x="Year", y="Seed", title = "Arizona's Seed in NCAA March Madness Tournament")+
+  theme_classic()
+
+uconn_seed <- cbb %>% 
+  filter(TEAM == "Connecticut", !is.na(SEED)) %>% 
+  ggplot(aes(x=YEAR, y=SEED, fill=SEED))+
+  scale_fill_manual(values=seed)+
+  geom_col()+
+  labs(x="Year", y="Seed", title = "UConn's Seed in NCAA March Madness Tournament")+
+  theme_classic()
+
+seed_plot <- ggarrange(arizona_seed, uconn_seed, ncol = 1, nrow = 2)
+
+seed_plot
+  
+```
+
+
+```{r}
+arizona_postseason <- cbb %>% 
+  filter(TEAM == "Arizona", !is.na(POSTSEASON), !POSTSEASON == "N/A") %>% 
+  ggplot(aes(x=YEAR, y=POSTSEASON, fill=POSTSEASON))+
+  scale_fill_manual(values = postseason)+
+  geom_col()+
+  labs(x="Year", y="Post Season Exit Round", title = "Arizona's Post Season Exit Round in NCAA March Madness Tournament")+
+  theme_classic()
+
+
+uconn_postseason <- cbb %>% 
+  filter(TEAM == "Connecticut", !is.na(POSTSEASON), !POSTSEASON == "N/A") %>% 
+  ggplot(aes(x=YEAR, y=POSTSEASON, fill = POSTSEASON))+
+  scale_fill_manual(values = postseason)+
+  geom_col()+
+  labs(x="Year", y="Post Season Exit Round", title = "UConn's Post Season Exit Round in NCAA March Madness Tournament")+
+  theme_classic()
+
+postseason_plot <- ggarrange(arizona_postseason, uconn_postseason, ncol=1, nrow=2)
+
+postseason_plot
+```
+
+
+```{r}
+arizona_drb <- cbb %>% 
+  filter(TEAM == "Arizona", !is.na(DRB), !DRB == "N/A") %>% 
+  ggplot(aes(x=YEAR, y=DRB, fill=DRB))+
+  geom_col()+
+  scale_fill_viridis_c(option = "magma")+
+  labs(x="Year", y="Defensive Rebound Rate", title = "Arizona's Defensive Rebound Rate")+
+  theme_classic()
+
+uconn_drb <- cbb %>% 
+  filter(TEAM == "Connecticut", !is.na(DRB), !DRB == "N/A") %>% 
+  ggplot(aes(x=YEAR, y=DRB, fill=DRB))+
+  geom_col()+
+  scale_fill_viridis_c(option = "magma")+
+  labs(x="Year", y="Defensive Rebound Rate", title = "UConn's Defensive Rebound Rate")+
+  theme_classic()
+
+drb_plot <- ggarrange(arizona_drb, uconn_drb, ncol=1, nrow=2)
+
+drb_plot
+```
+
+Making a new column based on if the school is Division 1 or other divisions
+
+```{r}
+# make division groups for each year
+division1 <- c("")
+cbb %>% 
+  mutate(DIV == case_when(CONF %in% division1~"1",
+                          CONF %in% division2~"2",
+                          CONF %in% division3~"3",
+                          NA=TRUE))
+```
+
+
+
+Kinda want to see how many schools were in each conference for each year
+
+```{r}
+cbb %>% 
+  ggplot(aes(x=CONF))+
+  geom_bar()
+```
 
 
 ## Things I may need to do
