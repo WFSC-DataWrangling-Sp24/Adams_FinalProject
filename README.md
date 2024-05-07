@@ -3,6 +3,8 @@ Grace Adams' Final Project repo.
 
 Final Project files can be found in Documents subdirectory. 
 
+If the directory isn't working correctly, add this knitr::opts_knit$set(root.dir = '/Users/*yournamehere*/Documents/Git/Adams_FinalProject') to the first code chunk in the FinalProject.Rmd. Fingers crossed that works if you have problems...
+
 Weeks included and what lines of code to find them in: 
 
 - 2: All.
