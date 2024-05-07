@@ -10,7 +10,6 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = '/Users/graceadams/Documents/Git/Adams_FinalProject')
 ```
 
 # Final Project
