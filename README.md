@@ -1,6 +1,8 @@
 # Adams_FinalProject
 Grace Adams' Final Project repo. 
 
+Final Project files can be found in Documents subdirectory. 
+
 Weeks included and what lines of code to find them in: 
 
 - 2: All.
