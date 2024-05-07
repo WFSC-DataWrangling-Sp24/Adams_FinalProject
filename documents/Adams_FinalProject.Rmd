@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 output:
   pdf_document: default
   html_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -12,39 +13,45 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = '/Users/graceadams/Documents/Git/Adams_FinalProject')
 ```
 
-## Final Project
+# Final Project
 
-# Problem Decomposition
+## Problem Decomposition
 
-    -   At the beginning of the document to introduce your dataset and the general tasks that you will be completing in the following code chunks (problem decomposition).
-    -   Text between the code chunks outlining the tasks that each code chunk is performing.
-    
-    
-    - Weeks to include 
-      - 2 - Wirtten in R (DONE)
-      - 5 - Data viz (DONE)
-      - 8 - Accomplish a larger task
-      - 9 - GitHub Repo/Reproducibility (DONE)
-      - 11 - Making Choices 
-      
-      - 6 - Tidy Data ? (renaming columns,,,, can rename a few and call it good?)
+*Hello! I decided to base my final project in a dataset I found on kaggle.com. The dataset contains statistics from all the NCAA Men's Division 1 College Basketball teams in the U.S. from 2013 to 2023. I chose the dataset while I was out of town traveling for the NCAA March Madness tournament, which I was very invested in. I thought it might be neat to look at the stats of some of the teams I was seeing, and of the PAC-12 conference as it is dissolving after the 2023-24 season. *
 
-A handful of fyi stuff: 
+Where I use things from each week:
+
+- Week 2: Throughout entire project.
+
+- Week 8: Mainly in the plotting section and Overall Conclusions section.
+
+- Week 9: Project is a GitHub repo. 
+
+- Week 5: Data Visualizations are the entirety of the plotting section.
+
+- Week 3: I used the filter, mutate and select functions we learned in week 3 throughout the project to select the columns I wanted from the original dataframe, make new columns, and select rows that fit certain conditions. 
+
+- Week 11: I used the case_when() function that we learned in week 11 to make the W_PERC_CLASS column. 
+
+I've specified in each code chunk what I am doing and what week it came from, and I've also compiled a list in the README file for the project that tells which lines of code correspond to what week. 
+
+
+
+A handful of FYI's about the data:
 
 - cbb.csv has seasons 2013-2019 and seasons 2021-2023 combined
 
-- The 2020 season's data set is kept separate from the other seasons, because there was no postseason due to the Coronavirus.
+- The 2020 season's data set is kept separate from the other seasons, because there was no postseason due to the Coronavirus. I don't use data from this season because it was so abnormal.
 
-- cbb24 contains data as of 3/18/2024. This dataset will be updated and added to cbb.csv at the conclusion of the Tournament.
+- The initial cbb.csv file had a lot of columns with statistics I didn't want to look at. 
 
-Data Dictionary: 
 
-- RK (Only in cbb20): The ranking of the team at the end of the regular season according to barttorvik
+- Data Dictionary: 
+  
+  - TEAM: The Division I college basketball school
 
-- TEAM: The Division I college basketball school
-
-- CONF: The Athletic Conference in which the school participates in 
-    - (A10 = Atlantic 10, 
+  - CONF: The Athletic Conference in which the school participates in 
+    - A10 = Atlantic 10, 
     - ACC = Atlantic Coast Conference, 
     - AE = America East, 
     - Amer = American, 
@@ -77,54 +84,61 @@ Data Dictionary:
     - WAC = Western Athletic Conference, 
     - WCC = West Coast Conference)
 
-- G: Number of games played
+  - G: Number of games played
 
-- W: Number of games won
+  - W: Number of games won
 
-- ADJOE: Adjusted Offensive Efficiency (An estimate of the offensive efficiency (points scored per 100 possessions) a team would have against the average Division I defense)
+  - ADJOE: Adjusted Offensive Efficiency (An estimate of the offensive efficiency (points scored per 100 possessions) a team would have against the average Division I defense)
 
-- ADJDE: Adjusted Defensive Efficiency (An estimate of the defensive efficiency (points allowed per 100 possessions) a team would have against the average Division I offense)
+  - ADJDE: Adjusted Defensive Efficiency (An estimate of the defensive efficiency (points allowed per 100 possessions) a team would have against the average Division I offense)
 
-- BARTHAG: Power Rating (Chance of beating an average Division I team)
+  - BARTHAG: Power Rating (Chance of beating an average Division I team)
 
-- EFG_O: Effective Field Goal Percentage Shot
+  - EFG_O: Effective Field Goal Percentage Shot
 
-- EFG_D: Effective Field Goal Percentage Allowed
+  - EFG_D: Effective Field Goal Percentage Allowed
 
-- TOR: Turnover Percentage Allowed (Turnover Rate)
+  - TOR: Turnover Percentage Allowed (Turnover Rate)
 
-- TORD: Turnover Percentage Committed (Steal Rate)
+  - TORD: Turnover Percentage Committed (Steal Rate)
 
-- ORB: Offensive Rebound Rate
+  - ORB: Offensive Rebound Rate
 
-- DRB: Offensive Rebound Rate Allowed
+  - DRB: Offensive Rebound Rate Allowed
 
-- FTR : Free Throw Rate (How often the given team shoots Free Throws)
+  - FTR : Free Throw Rate (How often the given team shoots Free Throws)
 
-- FTRD: Free Throw Rate Allowed
+  - FTRD: Free Throw Rate Allowed
 
-- 2P_O: Two-Point Shooting Percentage
+  - 2P_O: Two-Point Shooting Percentage
 
-- 2P_D: Two-Point Shooting Percentage Allowed
+  - 2P_D: Two-Point Shooting Percentage Allowed
 
-- 3P_O: Three-Point Shooting Percentage
+  - 3P_O: Three-Point Shooting Percentage
 
-- 3P_D: Three-Point Shooting Percentage Allowed
+  - 3P_D: Three-Point Shooting Percentage Allowed
 
-- ADJ_T: Adjusted Tempo (An estimate of the tempo (possessions per 40 minutes) a team would have against the team that wants to play at an average Division I tempo)
+  - ADJ_T: Adjusted Tempo (An estimate of the tempo (possessions per 40 minutes) a team would have against the team that wants to play at an average Division I tempo)
 
-- WAB: Wins Above Bubble (The bubble refers to the cut off between making the NCAA March Madness Tournament and not making it)
+  - WAB: Wins Above Bubble (The bubble refers to the cut off between making the NCAA March Madness Tournament and not making it)
 
-- POSTSEASON: Round where the given team was eliminated or where their season ended (R68 = First Four, R64 = Round of 64, R32 = Round of 32, S16 = Sweet Sixteen, E8 = Elite Eight, F4 = Final Four, 2ND = Runner-up, Champion = Winner of the NCAA March Madness Tournament for that given year)
+  - POSTSEASON: Round where the given team was eliminated or where their season ended 
+    - R68 = First Four, 
+    - R64 = Round of 64, 
+    - R32 = Round of 32, 
+    - S16 = Sweet Sixteen, 
+    - E8 = Elite Eight, 
+    - F4 = Final Four, 
+    - 2ND = Runner-up, 
+    - Champion = Winner of the NCAA March Madness Tournament for that given year
 
-- SEED: Seed in the NCAA March Madness Tournament
+  - SEED: Seed in the NCAA March Madness Tournament
 
-- YEAR: Season
+  - YEAR: Season
 
-
+*In this project I load in packages, make sure my working directory is correct, load in the files from the cbb folder, explore the data, select the columns I need, turn a few columns into factors, make a few plots, make a few new columns in the dataframe, and make a few more final plots.* 
 
 ## Loading packages
-
 ```{r}
 #install.packages("tidyverse")
 library(tidyverse)
@@ -142,78 +156,65 @@ library(RColorBrewer)
 
 ## Reading in the data
 
-
-# Set the directory where your .csv files are located
 ```{r}
+#checking working directory
 getwd()
-
 
 # create object to store directory of the files you want to use 
 folder_path <- "./data_raw/cbb"
 ```
 
-# List all .csv files in the folder
 ```{r}
+# create an object that is a list of all .csv files at the directory specified above
 file_list <- list.files (folder_path, pattern = "cbb[0-9]{2}\\.csv")
 ```
 
 
-## Loop through each file and read it into the environment
-## I don't think this was taught in class, need to find a way to do this with the things taught in class??
 ```{r}
+# Loop through each file and read it into the environment
 for (file in file_list) {
-  # Extract the two-digit number from the file name
+  # extract the two-digit number from the file name
   file_number <- gsub("cbb|\\.csv", "", file)
   
-  # Read the .csv file into a data frame with a name based on the file number
+  # read the .csv file into a data frame with a name based on the file number
   assign(paste0("cbb", file_number), read.csv(file.path(folder_path, file)))
 }
 
 # load in cbb.csv file on its own
-
 cbb <- read_csv("./data_raw/cbb/cbb.csv")
-
-```
-
-## Okay let's try it using Week 12 stuff:
-```{r}
-#for (file in file_list) {
-  # Extract the two-digit number from the file name
- # file_number <- gsub("cbb|\\.csv", "", file)
-  
-  # I need to do something here that will pull each .csv based on file_number and then assign each value of file_number to a new data frame named "cbb*file_number*" 
-  
-  
-#}
-
-
-# as of 05/03/24 need to come back to this
 ```
 
 
 ## Data Exploration
 ```{r}
+# two different ways of checking out the data
 summary(cbb)
 glimpse(cbb)
 ```
 
-What kind of stuff do I have here?
+What am I working with here?
 
 - 4 character variables (TEAM, CONF, POSTSEASON, SEED)
 
 - 20 numeric variables (G, W, ADJOE, ADJDE, BARTHAG, EFG_O, EFG_D, TOR, TORD, ORB, DRB, FTR, FTRD, X2P_O, X2P_D, X3P_O, X3P_D, ADJ_T, WAB, YEAR)
 
-  - Very happy that there does not appear to be any NAs in the numeric stuff or in the character stuff 
-
-summary(cbb13)
-
-- What kind of things can I glean from this data?
-
-# Let's just jump right into it!
+  - Very happy that there does not appear to be any NAs in the numeric stuff or in the character stuff!
 
 
-Some wee cleaning up (year, postseason, team, conference into factors)
+## Let's just jump right into it!
+
+
+I'm going to  select the columns I anticipate using. (Week 3)
 ```{r}
+# using the select function from Week 3
+cbb <- cbb %>% 
+  select(TEAM, CONF, G, W, ORB, DRB, POSTSEASON, SEED, YEAR)
+```
+
+
+My life will be easier if I turn TEAM, SEED, YEAR, POSTSEASON, and CONF into factors and give SEED and POSTSEASON their own specific color palettes. 
+```{r}
+#making TEAM, SEED, YEAR, POSTSEASON, and CONF factors and giving SEED and POSTSEASON their own specific color palettes. 
 cbb$TEAM <- as.factor(cbb$TEAM)
 
 cbb$SEED <- as.factor(cbb$SEED)
@@ -221,6 +222,8 @@ seed <- c("1" = "red", "2" = "orange", "3" = "yellow", "4"= "green", "5"= "blue"
 
 cbb$YEAR <- as.factor(cbb$YEAR)
 
+
+cbb$POSTSEASON <- factor(cbb$POSTSEASON, levels = c("R68", "R64", "R32", "S16", "E8", "F4", "2ND", "Champions"))
 cbb$POSTSEASON <- as.factor(cbb$POSTSEASON)
 postseason = c('R68'='darkorchid3','R64'='firebrick3','R32'='aquamarine3','S16'='slateblue3','E8' = 'green3', 'F4' = 'goldenrod3', '2ND' = 'gray71', 'Champions' = 'gold2')
 
@@ -229,13 +232,9 @@ cbb$CONF <- as.factor(cbb$CONF)
 ```
 
 
-
+Let's see the difference in seed for Arizona and UConn over the years...
 ```{r}
-cbb %>% 
-  filter(TEAM == "Arizona")
-```
-
-```{r}
+# using the tidyverse pipe and the filter function from Week 3 to get rows where TEAM is Arizona, and where SEED is not an NA value. Then plotting using knowledge from Week 5 and saving it in an object called arizona_seed. 
 arizona_seed <- cbb %>% 
   filter(TEAM == "Arizona", !is.na(SEED)) %>% 
   ggplot(aes(x=YEAR, y=SEED, fill=SEED))+
@@ -244,6 +243,7 @@ arizona_seed <- cbb %>%
   labs(x="Year", y="Seed", title = "Arizona's Seed in NCAA March Madness Tournament")+
   theme_classic()
 
+# using the tidyverse pipe and the filter function from Week 3 to get rows where TEAM is Connecticut, and where SEED is not an NA value. Then plotting using knowledge from Week 5 and saving it in an object called uconn_seed. 
 uconn_seed <- cbb %>% 
   filter(TEAM == "Connecticut", !is.na(SEED)) %>% 
   ggplot(aes(x=YEAR, y=SEED, fill=SEED))+
@@ -252,38 +252,43 @@ uconn_seed <- cbb %>%
   labs(x="Year", y="Seed", title = "UConn's Seed in NCAA March Madness Tournament")+
   theme_classic()
 
+# using ggarrange to paste both previous plots into one and saving that to an object called seed_plot. 
 seed_plot <- ggarrange(arizona_seed, uconn_seed, ncol = 1, nrow = 2)
 
+#calling seed_plot to see the plot
 seed_plot
-  
 ```
 
-
+Let's see the difference in postseason exit round for Arizona and UConn...
 ```{r}
+# using the tidyverse pipe and the filter function from Week 3 to get rows where TEAM is Arizona, and where POSTSEASON is not an NA value. Then plotting using knowledge from Week 5 and saving it in an object called arizona_postseason. 
 arizona_postseason <- cbb %>% 
   filter(TEAM == "Arizona", !is.na(POSTSEASON), !POSTSEASON == "N/A") %>% 
   ggplot(aes(x=YEAR, y=POSTSEASON, fill=POSTSEASON))+
   scale_fill_manual(values = postseason)+
   geom_col()+
-  labs(x="Year", y="Post Season Exit Round", title = "Arizona's Post Season Exit Round in NCAA March Madness Tournament")+
+  labs(x="Year", y="Postseason Exit Round", title = "Arizona's Postseason Exit Round in NCAA March Madness Tournament")+
   theme_classic()
 
-
+# using the tidyverse pipe and the filter function from Week 3 to get rows where TEAM is Connecticut, and where POSTSEASON is not an NA value. Then plotting using knowledge from Week 5 and saving it in an object called uconn_postseason. 
 uconn_postseason <- cbb %>% 
   filter(TEAM == "Connecticut", !is.na(POSTSEASON), !POSTSEASON == "N/A") %>% 
   ggplot(aes(x=YEAR, y=POSTSEASON, fill = POSTSEASON))+
   scale_fill_manual(values = postseason)+
   geom_col()+
-  labs(x="Year", y="Post Season Exit Round", title = "UConn's Post Season Exit Round in NCAA March Madness Tournament")+
+  labs(x="Year", y="Postseason Exit Round", title = "UConn's Postseason Exit Round in NCAA March Madness Tournament")+
   theme_classic()
 
+# using ggarrange to paste both previous plots into one and saving that to an object called postseason_plot. 
 postseason_plot <- ggarrange(arizona_postseason, uconn_postseason, ncol=1, nrow=2)
 
+# calling postseason_plot to see the plot 
 postseason_plot
 ```
 
-
+Let's see the difference in defensive rebound rate for Arizona and UConn...
 ```{r}
+# using the tidyverse pipe and the filter function from Week 3 to get rows where TEAM is Arizona, and where DRB is not an NA value. Then plotting using knowledge from Week 5 and saving it in an object called arizona_drb. 
 arizona_drb <- cbb %>% 
   filter(TEAM == "Arizona", !is.na(DRB), !DRB == "N/A") %>% 
   ggplot(aes(x=YEAR, y=DRB, fill=DRB))+
@@ -292,6 +297,7 @@ arizona_drb <- cbb %>%
   labs(x="Year", y="Defensive Rebound Rate", title = "Arizona's Defensive Rebound Rate")+
   theme_classic()
 
+# using the tidyverse pipe and the filter function from Week 3 to get rows where TEAM is Connecticut, and where DRB is not an NA value. Then plotting using knowledge from Week 5 and saving it in an object called uconn_drb.
 uconn_drb <- cbb %>% 
   filter(TEAM == "Connecticut", !is.na(DRB), !DRB == "N/A") %>% 
   ggplot(aes(x=YEAR, y=DRB, fill=DRB))+
@@ -300,48 +306,151 @@ uconn_drb <- cbb %>%
   labs(x="Year", y="Defensive Rebound Rate", title = "UConn's Defensive Rebound Rate")+
   theme_classic()
 
+# using ggarrange to paste both previous plots into one and saving that to an object called drb_plot. 
 drb_plot <- ggarrange(arizona_drb, uconn_drb, ncol=1, nrow=2)
 
+# calling drb_plot to see the plot
 drb_plot
 ```
 
-Making a new column based on if the school is Division 1 or other divisions
 
+Let's see the difference in offensive rebound rate for Arizona and UConn...
 ```{r}
-# make division groups for each year
-division1 <- c("")
-cbb %>% 
-  mutate(DIV == case_when(CONF %in% division1~"1",
-                          CONF %in% division2~"2",
-                          CONF %in% division3~"3",
-                          NA=TRUE))
+# using the tidyverse pipe and the filter function from Week 3 to get rows where TEAM is Arizona, and where ORB is not an NA value. Then plotting using knowledge from Week 5 and saving it in an object called arizona_orb.
+arizona_orb <- cbb %>% 
+  filter(TEAM == "Arizona", !is.na(ORB), !ORB == "N/A") %>% 
+  ggplot(aes(x=YEAR, y=ORB, fill=ORB))+
+  geom_col()+
+  scale_fill_viridis_c(option = "magma")+
+  labs(x="Year", y="Offensive Rebound Rate", title = "Arizona's Offensive Rebound Rate")+
+  theme_classic()
+
+# using the tidyverse pipe and the filter function from Week 3 to get rows where TEAM is Connecticut, and where ORB is not an NA value. Then plotting using knowledge from Week 5 and saving it in an object called connecticut_orb.
+uconn_orb <- cbb %>% 
+  filter(TEAM == "Connecticut", !is.na(ORB), !ORB == "N/A") %>% 
+  ggplot(aes(x=YEAR, y=ORB, fill=ORB))+
+  geom_col()+
+  scale_fill_viridis_c(option = "magma")+
+  labs(x="Year", y="Offensive Rebound Rate", title = "UConn's Offensive Rebound Rate")+
+  theme_classic()
+
+# using ggarrange to paste both previous plots into one and saving that to an object called orb_plot. 
+orb_plot <- ggarrange(arizona_orb, uconn_orb, ncol=1, nrow=2)
+
+# calling orb_plot to see the plot
+orb_plot
+```
+
+
+Let's check out when each school in the Pac-12 exited the NCAA March Madness Tournament if they made it in...
+```{r}
+# using the tidyverse pipe and the filter function from Week 3 to get rows where CONF is P12, and where POSTSEASON is not an NA value. Then plotting using knowledge from Week 5 and saving it in an object called pac12_postseason.
+pac12_postseason <- cbb %>% 
+  filter(CONF == "P12", !is.na(POSTSEASON), !POSTSEASON == "N/A") %>% 
+  ggplot(aes(x=YEAR, y=POSTSEASON, fill = POSTSEASON))+
+  geom_col()+
+  scale_fill_manual(values = postseason)+
+  theme_classic()+
+  labs(x="Year", y= "Count", title = "PAC-12 Teams Post Season Exit Round in NCAA March Madness Tournament")+
+  theme(legend.position = "bottom", axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  guides(fill = guide_legend(nrow = 1))+
+  facet_wrap(~TEAM)
+
+# calling pac12_postseason to see the plot 
+pac12_postseason
 ```
 
 
 
-Kinda want to see how many schools were in each conference for each year
-
+I think it would be neat to see the percentage of games each team won in each year... Let's make a new column called W_PERC to show that. 
 ```{r}
-cbb %>% 
-  ggplot(aes(x=CONF))+
-  geom_bar()
+# using the tidyverse pipe and the mutate function to divide the number of wins each team had in each year by the total number of games they played each year. Then overwriting the original dataframe.
+cbb <- cbb %>% 
+  mutate(W_PERC = cbb$W/cbb$G)
 ```
 
 
-## Things I may need to do
-
-- I'm gonna want to make postseason, possibly seed, possibly conference, and possibly team into factors with levels for easier plotting. 
-
-- 
-
-## What I said I wanted to do in the proposal
-
-- 3.  Speaking generally, what tasks will you perform with this dataset? It might include tasks that we have not yet covered how to accomplish in class, but come up with a general plan that you would like to follow.
-
-  I'm interested to combine the .csv files into one large file with a year column and make a few plots showing how each team has done over the years. I am obviously most interested in Arizona basketball, but I'll make a few plots of when a handful of teams exited the postseason tournament (which I am currently traveling for) each year. 
-  
-4.  One of the requirements of the final project is to make some type of plot using `ggplot2` with the data. What do you plan to plot from your data?
-
-  I plan to plot a histogram of the frequency of when Arizona basketball exited from the March Madness tournament over the years. I also plan to plot the champions over the past 11 years and perhaps their win-loss record as well. I might plot conference as well, noting any changes in conference over the years. 
+Alright now that that worked, let's make another new column called W_PERC_CLASS telling me if the win percentage is between 0 and 25% then 25 and 50%, then 50 and 75%, then 75 and 90%, then 90 and 95% and finally 95-100%. 
+```{r}
+# using the tidyverse pipe and the mutate and case_when functions to make 6 classes of win percentage based on the value of W_PERC for each row. Then overwriting the original dataframe. 
+cbb <- cbb %>% 
+  mutate(W_PERC_CLASS = case_when(W_PERC >= .95 ~ "95-100%",
+                                  W_PERC >= .90 & W_PERC < .95 ~ "90-95%",
+                                  W_PERC >= .75 & W_PERC < .90 ~ "75-90%",
+                                  W_PERC >= .50 & W_PERC < .75 ~ "50-75%",
+                                  W_PERC >= .25 & W_PERC < .50 ~ "25-50%",
+                                  W_PERC >= .0 & W_PERC < .25 ~ "0-25%",
+                                  TRUE ~ NA))
+```
 
 
+Let's make a plot showing the win percentage categories...
+```{r}
+# making W_PERC_CLASS a factor and giving it its own specific color palette. 
+cbb$W_PERC_CLASS <- as.factor(cbb$W_PERC_CLASS)
+w_perc_class = c('0-25%'='darkblue','25-50%'='darkcyan','50-75%'='darkolivegreen','75-90%'='darkgoldenrod4',"90-95%" = 'deeppink4', '95-100%' = 'darkred')
+
+# plotting W_PERC_CLASS for all teams and then saving it to an object called all_teams_w_perc_class.
+all_teams_w_perc_class <- cbb %>% 
+  ggplot(aes(x=W_PERC_CLASS, fill = W_PERC_CLASS))+
+  geom_bar()+
+  scale_fill_manual(values = w_perc_class)+
+  theme_classic()+
+  labs(x="Win Percentage Class", y="Count", title = "All Teams Win Percentage Class from 2013-2023")+
+  theme(legend.position = "none")
+
+# calling all_teams_w_perc_class to see the plot
+all_teams_w_perc_class
+```
+
+Let's make a plot showing the Pac-12 schools win percentage class...
+```{r}
+# using the tidyverse pipe and the filter function from Week 3 to get rows where CONF is P12. Then plotting using knowledge from Week 5 and saving it in an object called p12_w_perc_class.
+p12_w_perc_class <- cbb %>% 
+  filter(CONF == "P12") %>% 
+  ggplot(aes(x=W_PERC_CLASS, fill = W_PERC_CLASS))+
+  geom_bar()+
+  scale_fill_manual(values = w_perc_class)+
+  theme_classic()+
+  labs(x="Win Percentage Class", y="Count", title = "Pac-12 Teams Win Percentage Class from 2013-2023", subtitle = "Arizona, Arizona St., Oregon, California, Colorado, Oregon St., Stanford, USC, Washington, Washington St., UCLA, Utah")+
+  theme(legend.position = "none", plot.subtitle=element_text(size=8), axis.text.x = element_text(size=7))+
+  facet_wrap(~YEAR)
+
+# calling p12_w_perc_class to see the plot.
+p12_w_perc_class
+```
+
+Let's see the difference between win percentage class for Arizona and UConn...
+```{r}
+# using the tidyverse pipe and the filter function from Week 3 to get rows where TEAM is Arizona. Then plotting using knowledge from Week 5 and saving it in an object called arizona_w_perc_class.
+arizona_w_perc_class <- 
+  cbb %>% 
+  filter(TEAM == "Arizona") %>% 
+  ggplot(aes(x=W_PERC_CLASS, fill = W_PERC_CLASS))+
+  geom_bar()+
+  scale_fill_manual(values = w_perc_class)+
+  theme_classic()+
+  labs(x="Win Percentage Class", y="Count", title = "Arizona Win Percentage Class from 2013-2023")+
+  theme(legend.position = "none", plot.subtitle=element_text(size=8), axis.text.x = element_text(size=7))
+
+# using the tidyverse pipe and the filter function from Week 3 to get rows where TEAM is Connecticut Then plotting using knowledge from Week 5 and saving it in an object called uconn_w_perc_class.
+uconn_w_perc_class <- 
+  cbb %>% 
+  filter(TEAM == "Connecticut") %>% 
+  ggplot(aes(x=W_PERC_CLASS, fill = W_PERC_CLASS))+
+  geom_bar()+
+  scale_fill_manual(values = w_perc_class)+
+  theme_classic()+
+  labs(x="Win Percentage Class", y="Count", title = "Connecticut Win Percentage Class from 2013-2023")+
+  theme(legend.position = "none", plot.subtitle=element_text(size=8), axis.text.x = element_text(size=7))
+
+# using ggarrange to paste both previous plots into one and saving that to an object called uconn_az_win_perc_class. 
+uconn_az_win_perc_class <- ggarrange(arizona_w_perc_class, uconn_w_perc_class, nrow=2, ncol =1)
+
+# calling uconn_az_win_perc_class to see the plot
+uconn_az_win_perc_class
+```
+
+
+## Overarching Conclusions from Plots
+The plots I made comparing the statistics of Arizona and UConn were interesting because it showed me that there isn't a lot of carry over of some statistic performance year to year. College basketball has a lot of turnover because each player only gets 5 years to play up to 4 seasons, meaning that each year the team can be drastically different and perform differently in each category. These conclusions constitute accomplishing a larger task as we learned how to do in Week 8. 
