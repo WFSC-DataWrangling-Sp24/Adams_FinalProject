@@ -23,7 +23,7 @@ Where I use things from each week:
 
 - Week 2: Throughout entire project.
 
-- Week 8: Mainly in the plotting section and Overall Conclusions section.
+- Week 8: Mainly in the plotting section and Overarching Conclusions section.
 
 - Week 9: Project is a GitHub repo. 
 
